@@ -1,2 +1,12 @@
 # SnmpTool
 一个SNMP连接测试工具，可以根据OID查询该OID对应的值
+工具支持AES128，AES192，AES256，DES，3DES
+MD5，SHA，SHA224，SHA256，SHA384，SHA512
+
+
+
+
+
+
+
+
