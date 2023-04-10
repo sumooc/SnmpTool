@@ -1,7 +1,8 @@
 module org.xiwei.snmptool {
     requires javafx.controls;
     requires javafx.fxml;
-        requires javafx.web;
+    requires javafx.web;
+    requires com.alibaba.fastjson2;
             
       /*  requires org.controlsfx.controls;
             requires com.dlsc.formsfx;
@@ -10,7 +11,7 @@ module org.xiwei.snmptool {
             requires org.kordamp.bootstrapfx.core;
             requires eu.hansolo.tilesfx;
             requires com.almasb.fxgl.all;*/
-    
+
     opens org.xiwei.snmptool to javafx.fxml;
     exports org.xiwei.snmptool;
 }
