@@ -3,10 +3,7 @@ package org.xiwei.snmptool;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 
 import java.net.URL;
@@ -29,13 +26,25 @@ public class SnmpController implements Initializable {
     private TextField username;
 
     @FXML
+    private Label authProtocolLabel;
+
+    @FXML
     private ChoiceBox<String> authProtocol;
+
+    @FXML
+    private Label authPasswordLabel;
 
     @FXML
     private TextField authPassword;
 
     @FXML
+    private Label encryProtocolLabel;
+
+    @FXML
     private ChoiceBox<String> encryProtocol;
+
+    @FXML
+    private Label encryPasswordLabel;
 
     @FXML
     private TextField encryPassword;
@@ -75,6 +84,16 @@ public class SnmpController implements Initializable {
         encryProtocol.getItems().addAll(encryProtocolValue);
         encryProtocol.getSelectionModel().select(0);
         encryProtocol.setOnAction(this::getVersion);
+
+        // 打开软件的时候默认是snmp v1 所以不显示认证和加密
+        authProtocolLabel.setVisible(false);
+        authProtocol.setVisible(false);
+        authPasswordLabel.setVisible(false);
+        authPassword.setVisible(false);
+        encryProtocolLabel.setVisible(false);
+        encryProtocol.setVisible(false);
+        encryPasswordLabel.setVisible(false);
+        encryPassword.setVisible(false);
     }
 
     public String getVersion(ActionEvent event) {
@@ -83,6 +102,14 @@ public class SnmpController implements Initializable {
 
     @FXML
     void click(MouseEvent event) {
+        System.out.println(version.getSelectionModel().getSelectedItem());
+        System.out.println(ipAddress.getText());
         System.out.println("11111111111");
     }
+
+    @FXML
+    void selectVersion(MouseEvent event){
+        System.out.println(version.getValue());
+    }
+
 }

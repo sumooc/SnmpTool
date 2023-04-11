@@ -39,10 +39,10 @@
             <Label text="SNMP版本：" GridPane.rowIndex="2" />
             <Label text="共同体：" GridPane.rowIndex="3" />
             <Label text="用户名：" GridPane.rowIndex="4" />
-            <Label text="认证协议：" GridPane.rowIndex="5" />
-            <Label text="认证密码：" GridPane.rowIndex="6" />
-            <Label text="加密协议：" GridPane.rowIndex="7" />
-            <Label text="加密密码：" GridPane.rowIndex="8" />
+            <Label fx:id="authProtocolLabel" text="认证协议：" GridPane.rowIndex="5" />
+            <Label fx:id="authPasswordLabel" text="认证密码：" GridPane.rowIndex="6" />
+            <Label fx:id="encryProtocolLabel" text="加密协议：" GridPane.rowIndex="7" />
+            <Label fx:id="encryPasswordLabel" text="加密密码：" GridPane.rowIndex="8" />
             <Label text="重试次数：" GridPane.rowIndex="12" />
             <Label text="超时时间：" GridPane.rowIndex="11" />
             <Label text="OIDs：" GridPane.rowIndex="9" />
@@ -56,7 +56,7 @@
             <TextArea fx:id="oid" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="9" />
             <TextField fx:id="overtime" GridPane.columnIndex="1" GridPane.rowIndex="11" />
             <TextField fx:id="retry" GridPane.columnIndex="1" GridPane.rowIndex="12" />
-            <ChoiceBox fx:id="version" prefWidth="193.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <ChoiceBox fx:id="version" onMouseReleased="#selectVersion" prefWidth="193.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
             <ChoiceBox fx:id="authProtocol" prefWidth="193.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
             <ChoiceBox fx:id="encryProtocol" prefWidth="193.0" GridPane.columnIndex="1" GridPane.rowIndex="7" />
          </children>
