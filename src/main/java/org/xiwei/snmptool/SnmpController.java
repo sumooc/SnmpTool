@@ -1,10 +1,16 @@
 package org.xiwei.snmptool;
 
+import com.alibaba.fastjson2.JSON;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.GridPane;
+import org.xiwei.common.SnmpAgent;
+import org.xiwei.common.SnmpParameter;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -61,15 +67,24 @@ public class SnmpController implements Initializable {
     @FXML
     private Button commit;
 
+    @FXML
+    private TextArea result;
+
+    @FXML
+    private GridPane basicInfo;
+
     public String[] versionValue = {"SNMP v1", "SNMP v2c", "SNMP v3"};
     public String[] authProtocolValue = {"AES128", "AES192", "AES256", "DES", "3DES"};
     public String[] encryProtocolValue = {"MD5", "SHA", "SHA224", "SHA256", "SHA384", "SHA512"};
-
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         port.setText("161");
         community.setText("public");
+
+        //自动换行
+        oid.setWrapText(true);
+        result.setWrapText(true);
 
         // SNMP版本
         version.getItems().addAll(versionValue);
@@ -85,31 +100,61 @@ public class SnmpController implements Initializable {
         encryProtocol.getSelectionModel().select(0);
         encryProtocol.setOnAction(this::getVersion);
 
-        // 打开软件的时候默认是snmp v1 所以不显示认证和加密
-        authProtocolLabel.setVisible(false);
-        authProtocol.setVisible(false);
-        authPasswordLabel.setVisible(false);
-        authPassword.setVisible(false);
-        encryProtocolLabel.setVisible(false);
-        encryProtocol.setVisible(false);
-        encryPasswordLabel.setVisible(false);
-        encryPassword.setVisible(false);
+        authProtocol.setDisable(true);
+        authPassword.setDisable(true);
+        encryProtocol.setDisable(true);
+        encryPassword.setDisable(true);
+        // 监听SNMP版本，控制界面上一些控件是否能使用
+        version.getSelectionModel().selectedItemProperty().addListener((observableValue, oldValue, newValue) -> {
+            int index = version.getSelectionModel().getSelectedIndex();
+            if (index == 2) {
+                username.setDisable(false);
+                authProtocol.setDisable(false);
+                authPassword.setDisable(false);
+                encryProtocol.setDisable(false);
+                encryPassword.setDisable(false);
+            } else {
+                username.setDisable(true);
+                authProtocol.setDisable(true);
+                authPassword.setDisable(true);
+                encryProtocol.setDisable(true);
+                encryPassword.setDisable(true);
+            }
+        });
+
     }
 
     public String getVersion(ActionEvent event) {
-        return version.getValue().toString();
+        return version.getValue();
     }
 
     @FXML
     void click(MouseEvent event) {
-        System.out.println(version.getSelectionModel().getSelectedItem());
-        System.out.println(ipAddress.getText());
-        System.out.println("11111111111");
+        SnmpAgent snmpAgent = new SnmpAgent();
+        SnmpParameter parameter = new SnmpParameter();
+        int versionIndex = version.getSelectionModel().getSelectedIndex();
+        if (versionIndex == 2) {
+            parameter.setSnmpVersion(3);
+            parameter.setAuthProtocol(authProtocol.getSelectionModel().getSelectedIndex());
+            parameter.setAuthPassphrase(authPassword.getText());
+            parameter.setPrivacyProtocol(encryProtocol.getSelectionModel().getSelectedIndex());
+            parameter.setPrivacyPassphrase(encryPassword.getText());
+        } else {
+            parameter.setSnmpVersion(versionIndex);
+        }
+        parameter.setIpAddress(ipAddress.getText());
+        parameter.setPort(Integer.parseInt(port.getText()));
+        parameter.setCommunity(community.getText());
+        parameter.setSecurityName(username.getText());
+        String[] oidArr = oid.getText().split(",");
+        parameter.setoIds(oidArr);
+        parameter.setSnmpTimeout(Integer.parseInt(overtime.getText()));
+        parameter.setSnmpRetry(Integer.parseInt(retry.getText()));
+        try {
+            String result = snmpAgent.getSnmpResult(parameter).toString();
+            this.result.setText(result);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
-
-    @FXML
-    void selectVersion(MouseEvent event){
-        System.out.println(version.getValue());
-    }
-
 }

@@ -20,7 +20,7 @@
         <dependency>
             <groupId>org.snmp4j</groupId>
             <artifactId>snmp4j</artifactId>
-            <version>3.7.1</version>
+            <version>3.7.7</version>
         </dependency>
         <dependency>
             <groupId>cn.hutool</groupId>
@@ -64,7 +64,7 @@
                     <archive>
                         <manifest>
                             <!-- 此处指定main方法入口的class -->
-                            <mainClass>org.sumooc.SumoocAPP</mainClass>
+                            <mainClass>org.xiwei.snmptool.Main</mainClass>
                         </manifest>
                     </archive>
                     <appendAssemblyId>false</appendAssemblyId>

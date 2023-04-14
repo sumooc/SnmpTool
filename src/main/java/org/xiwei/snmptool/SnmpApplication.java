@@ -10,15 +10,10 @@ import java.io.IOException;
 public class SnmpApplication extends Application {
     @Override
     public void start(Stage stage) throws IOException {
-        //FXMLLoader fxmlLoader = new FXMLLoader(SnmpApplication.class.getResource("SnmpToolUi.fxml"));
         FXMLLoader fxmlLoader = new FXMLLoader(SnmpApplication.class.getResource("SnmpUi.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 800, 650);
+        Scene scene = new Scene(fxmlLoader.load(), 800, 600);
         stage.setTitle("SnmpTool");
         stage.setScene(scene);
         stage.show();
-    }
-
-    public static void main(String[] args) {
-        launch();
     }
 }

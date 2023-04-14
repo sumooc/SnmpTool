@@ -3,6 +3,8 @@ module org.xiwei.snmptool {
     requires javafx.fxml;
     requires javafx.web;
     requires com.alibaba.fastjson2;
+    requires org.apache.commons.lang3;
+    requires org.snmp4j;
             
       /*  requires org.controlsfx.controls;
             requires com.dlsc.formsfx;
