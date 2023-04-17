@@ -4,11 +4,16 @@ import com.alibaba.fastjson2.JSON;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Group;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
+import javafx.stage.Stage;
+import org.apache.commons.lang3.StringUtils;
 import org.xiwei.common.SnmpAgent;
 import org.xiwei.common.SnmpParameter;
 
@@ -81,6 +86,8 @@ public class SnmpController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         port.setText("161");
         community.setText("public");
+        overtime.setText("3000");
+        retry.setText("2");
 
         //自动换行
         oid.setWrapText(true);
@@ -132,6 +139,23 @@ public class SnmpController implements Initializable {
     void click(MouseEvent event) {
         SnmpAgent snmpAgent = new SnmpAgent();
         SnmpParameter parameter = new SnmpParameter();
+        String ipAddressText = ipAddress.getText();
+        if (StringUtils.isEmpty(ipAddressText)){
+            commit.setOnAction(buttonEvent -> {
+                Stage msgBox = new Stage();
+                Group msgGroup = new Group();
+                Scene scene1 = new Scene(msgGroup, 230, 50);
+
+                Label label = new Label("IP地址不能为空");
+                label.setLayoutX(80);
+                label.setLayoutY(20);
+                msgGroup.getChildren().add(label);
+
+                msgBox.setScene(scene1);
+                msgBox.show();
+            });
+        }
+        parameter.setIpAddress(ipAddress.getText());
         int versionIndex = version.getSelectionModel().getSelectedIndex();
         if (versionIndex == 2) {
             parameter.setSnmpVersion(3);
@@ -142,7 +166,6 @@ public class SnmpController implements Initializable {
         } else {
             parameter.setSnmpVersion(versionIndex);
         }
-        parameter.setIpAddress(ipAddress.getText());
         parameter.setPort(Integer.parseInt(port.getText()));
         parameter.setCommunity(community.getText());
         parameter.setSecurityName(username.getText());
